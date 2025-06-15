@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>3.5.0</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+	<groupId>io.owenrbee.tambak</groupId>
+	<artifactId>annotations</artifactId>
+	<version>0.1.0</version>
+	<name>Aspect and Annotations</name>
+	<description>Java Util Annotations</description>
+	<url/>
+	<licenses>
+        <license>
+            <name>MIT License</name>
+            <url>[https://opensource.org/licenses/MIT](https://opensource.org/licenses/MIT)</url>
+            <distribution>repo</distribution>
+        </license>
+	</licenses>
+	<developers>
+        <developer>
+            <name>Owen Bringino</name>
+            <email>owenrbee@gmail.com</email>
+            <organization>Obee Juan Can Nobody</organization>
+            <organizationUrl>[https://github.com/owenrb](https://github.com/owenrb)</organizationUrl>
+        </developer>
+	</developers>
+    <scm>
+        <connection>scm:git:git://[github.com/owenrb/tambak.git](https://github.com/owenrb/tambak.git)</connection>
+        <developerConnection>scm:git:ssh://github.com:owenrb/tambak.git</developerConnection>
+        <url>[https://github.com/owenrb/tambak/tree/master](https://github.com/owenrb/tambak/tree/master)</url>
+    </scm>
+	<properties>
+		<java.version>17</java.version>
+	</properties>
+	<dependencies>
+
+        <!-- Spring Boot Starter is included here in the provided scope
+             because the integration tests (like ReverseAspectIntegrationTest)
+             are full Spring Boot applications, requiring a complete context. -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Spring Boot Starter AOP is essential for enabling Aspect-Oriented Programming,
+             which allows intercepting methods based on annotations. -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+
+        <!-- AspectJ Weaver provides the weaving capabilities (compile-time or load-time)
+             necessary for Spring AOP to function. It's often pulled by starter-aop,
+             but explicitly declaring it can sometimes help with clarity or specific tooling. -->
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+        </dependency>
+
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+		</dependency>
+
+        <!-- TEST DEPENDENCIES -->
+        <!-- Spring Boot Starter Test provides comprehensive testing support for Spring Boot applications,
+             including JUnit 5, Mockito, and Spring Test. Crucial for integration tests. -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope> <!-- This dependency is only needed during the test phase -->
+        </dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+				<annotationProcessorPaths>
+					<path>
+					<groupId>org.projectlombok</groupId>
+					<artifactId>lombok</artifactId>
+					</path>
+				</annotationProcessorPaths>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
