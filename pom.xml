@@ -32,7 +32,7 @@
     <scm>
         <connection>scm:git:git://[github.com/owenrb/tambak.git](https://github.com/owenrb/tambak.git)</connection>
         <developerConnection>scm:git:ssh://github.com:owenrb/tambak.git</developerConnection>
-        <url>[https://github.com/owenrb/tambak/tree/master](https://github.com/owenrb/tambak/tree/master)</url>
+        <url>[https://github.com/owenrb/tambak/tree/main](https://github.com/owenrb/tambak/tree/main)</url>
     </scm>
 	<properties>
 		<java.version>17</java.version>
