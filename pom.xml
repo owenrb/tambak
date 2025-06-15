@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>io.github.owenrb</groupId>
 	<artifactId>tambak</artifactId>
-	<version>0.1.0</version>
+	<version>0.1.1</version>
 	<name>Aspect and Annotations</name>
 	<description>Java Util Annotations</description>
 	<url>https://github.com/owenrb/tambak</url>

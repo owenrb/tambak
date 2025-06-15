@@ -2,18 +2,22 @@ package io.owenrbee.tambak.service;
 
 import org.springframework.stereotype.Service;
 
+import io.owenrbee.tambak.annotation.MustNotNullList;
 import io.owenrbee.tambak.annotation.ReverseList;
 import io.owenrbee.tambak.annotation.UniqueList;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
- * Sample service to demonstrate the @Reverse and @UniqueList annotations for
+ * Sample service to demonstrate annotations for
  * testing purposes.
  * This class is part of the test module and is not shipped with the library.
  */
 @Service // Declares this class as a Spring service for test context
+@Slf4j
 public class DataService {
 
     /**
@@ -24,7 +28,7 @@ public class DataService {
      */
     @ReverseList // Apply our custom annotation here for testing reversal
     public List<String> getItemsInOrder() {
-        System.out.println("--- DataService: Inside getItemsInOrder() method.");
+        log.debug("--- DataService: Inside getItemsInOrder() method.");
         return Arrays.asList("Apple", "Banana", "Cherry", "Date");
     }
 
@@ -37,7 +41,7 @@ public class DataService {
      */
     @ReverseList
     public List<Integer> getNumbers() {
-        System.out.println("--- DataService: Inside getNumbers() method.");
+        log.debug("--- DataService: Inside getNumbers() method.");
         return Arrays.asList(1, 2, 3, 4, 5);
     }
 
@@ -49,7 +53,7 @@ public class DataService {
      * @return A list of characters.
      */
     public List<Character> getCharacters() {
-        System.out.println("--- DataService: Inside getCharacters() method (not reversed).");
+        log.debug("--- DataService: Inside getCharacters() method (not reversed).");
         return Arrays.asList('a', 'b', 'c');
     }
 
@@ -61,7 +65,7 @@ public class DataService {
      */
     @UniqueList // Apply the new unique list annotation
     public List<String> getItemsWithDuplicates() {
-        System.out.println("--- DataService: Inside getItemsWithDuplicates() method.");
+        log.debug("--- DataService: Inside getItemsWithDuplicates() method.");
         return Arrays.asList("Red", "Blue", "Green", "Red", "Blue", "Yellow", "Green");
     }
 
@@ -74,7 +78,55 @@ public class DataService {
      */
     @UniqueList
     public List<Integer> getNumbersWithDuplicates() {
-        System.out.println("--- DataService: Inside getNumbersWithDuplicates() method.");
+        log.debug("--- DataService: Inside getNumbersWithDuplicates() method.");
         return Arrays.asList(10, 20, 10, 30, 20, 40, 10);
+    }
+
+    // --- Methods directly annotated with @MustNotNullList ---
+
+    /**
+     * Returns null, but @MustNotNullList (default modifiable=true) should ensure
+     * a new modifiable empty list is returned.
+     * 
+     * @return A null list.
+     */
+    @MustNotNullList
+    public List<String> getNullableStringsModifiable() {
+        log.debug("--- DataService: Inside getNullableStringsModifiable() method (returning null).");
+        return null;
+    }
+
+    /**
+     * Returns null, but @MustNotNullList (modifiable=false) should ensure
+     * an unmodifiable empty list is returned.
+     * 
+     * @return A null list.
+     */
+    @MustNotNullList(modifiable = false)
+    public List<Integer> getNullableIntegersUnmodifiable() {
+        log.debug("--- DataService: Inside getNullableIntegersUnmodifiable() method (returning null).");
+        return null;
+    }
+
+    /**
+     * Returns an empty list explicitly. @MustNotNullList should not interfere.
+     * 
+     * @return An empty list.
+     */
+    @MustNotNullList
+    public List<Double> getNonNullEmptyList() {
+        log.debug("--- DataService: Inside getNonNullEmptyList() method (returning empty list).");
+        return Collections.emptyList();
+    }
+
+    /**
+     * Returns a non-empty list. @MustNotNullList should not interfere.
+     * 
+     * @return A non-empty list.
+     */
+    @MustNotNullList
+    public List<Boolean> getNonNullNonEmptyList() {
+        log.debug("--- DataService: Inside getNonNullNonEmptyList() method (returning non-empty list).");
+        return Arrays.asList(true, false);
     }
 }

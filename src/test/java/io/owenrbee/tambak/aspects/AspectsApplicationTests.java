@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
+import io.owenrbee.tambak.aspect.MustNotNullListAspect;
 import io.owenrbee.tambak.aspect.ReverseListAspect;
 import io.owenrbee.tambak.aspect.UniqueListAspect;
 import io.owenrbee.tambak.config.EnableTambakAnnotations;
@@ -41,6 +42,11 @@ class AspectsApplicationTests {
 		@Bean
 		public UniqueListAspect uniqueListAspect() {
 			return new UniqueListAspect();
+		}
+
+		@Bean
+		public MustNotNullListAspect mustNotNullListAspect() {
+			return new MustNotNullListAspect();
 		}
 	}
 
@@ -128,5 +134,73 @@ class AspectsApplicationTests {
 
 		Assertions.assertEquals(expectedUniqueOrder, actualResult,
 				"List of integers should have duplicates removed and order preserved.");
+	}
+
+	// --- Tests for @MustNotNullList on methods ---
+
+	/**
+	 * Test case to verify that a null return is replaced by a modifiable empty
+	 * list.
+	 */
+	@Test
+	void testGetNullableStringsModifiable() {
+		log.debug("\n--- Test: Calling getNullableStringsModifiable() ---");
+		List<String> result = dataService.getNullableStringsModifiable();
+		log.debug("Test Result (MustNotNullList, modifiable): " + result);
+
+		Assertions.assertNotNull(result, "@MustNotNullList should return a non-null list.");
+		Assertions.assertTrue(result.isEmpty(), "@MustNotNullList should return an empty list when original is null.");
+		// Verify modifiability
+		result.add("test");
+		Assertions.assertEquals(1, result.size(), "List should be modifiable.");
+	}
+
+	/**
+	 * Test case to verify that a null return is replaced by an unmodifiable empty
+	 * list.
+	 */
+	@Test
+	void testGetNullableIntegersUnmodifiable() {
+		log.debug("\n--- Test: Calling getNullableIntegersUnmodifiable() ---");
+		List<Integer> result = dataService.getNullableIntegersUnmodifiable();
+		log.debug("Test Result (MustNotNullList, unmodifiable): " + result);
+
+		Assertions.assertNotNull(result, "@MustNotNullList should return a non-null list.");
+		Assertions.assertTrue(result.isEmpty(), "@MustNotNullList should return an empty list when original is null.");
+		// Verify unmodifiability
+		Assertions.assertThrows(UnsupportedOperationException.class, () -> result.add(1),
+				"List should be unmodifiable.");
+	}
+
+	/**
+	 * Test case to ensure @MustNotNullList does not alter an already non-null empty
+	 * list.
+	 */
+	@Test
+	void testGetNonNullEmptyList() {
+		log.debug("\n--- Test: Calling getNonNullEmptyList() ---");
+		List<Double> result = dataService.getNonNullEmptyList();
+		log.debug("Test Result (MustNotNullList, non-null empty): " + result);
+
+		Assertions.assertNotNull(result);
+		Assertions.assertTrue(result.isEmpty());
+		// If the original was Collections.emptyList(), it remains unmodifiable.
+		// If it was new ArrayList<>(), it would be modifiable.
+		// We'll just check it's still empty and not null.
+	}
+
+	/**
+	 * Test case to ensure @MustNotNullList does not alter an already non-null
+	 * non-empty list.
+	 */
+	@Test
+	void testGetNonNullNonEmptyList() {
+		log.debug("\n--- Test: Calling getNonNullNonEmptyList() ---");
+		List<Boolean> result = dataService.getNonNullNonEmptyList();
+		log.debug("Test Result (MustNotNullList, non-null non-empty): " + result);
+
+		Assertions.assertNotNull(result);
+		Assertions.assertFalse(result.isEmpty());
+		Assertions.assertEquals(Arrays.asList(true, false), result);
 	}
 }
